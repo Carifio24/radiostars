@@ -922,7 +922,7 @@ export default defineComponent({
       Constellations.initializeConstellationNames = initializeConstellationNames;
       //Grids._makeAltAzGridText = makeAltAzGridText;
 
-      Grids._milkyWayImage = Texture.fromUrl("https://www.cosmos.esa.int/documents/29201/20118332/MilkyWay_25J14_40KPC_Top_D53_5K_HighContrast_Smallest.jpg/26ecc3f3-f32f-6c53-1875-3c31d4a2b017?t=1736882726155");
+      Grids._milkyWayImage = Texture.fromUrl("https://data1.wwtassets.org/packages/2025/01_gaia_milky_way/Gaia-HighContrast-MilkyWay-sm.jpg");
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
