@@ -114,16 +114,16 @@
 
         <ul class="hamb-menu-container" :class="{'show': isMenuOpen }">
 
-        <li class="hamb-menu-items" style="cursor: pointer;" @click="openIntro">
+        <li class="hamb-menu-items" @click="openIntro">
           <i class="fas fa-regular fa-info-circle"></i>
           Overview
         </li>
         
-        <li class="hamb-menu-items" style="cursor: pointer;" @click="toggleBgSlider">
+        <li class="hamb-menu-items" @click="toggleBgSlider">
           <i class="fas fa-adjust"></i> Crossfade (2D)
         </li>
 
-        <li class="hamb-menu-items" style="cursor: pointer;" @click="toggleSkySurveySelector">
+        <li class="hamb-menu-items" @click="toggleSkySurveySelector">
           <i class="fas fa-solid fa-star"></i> Choose Sky Survey (2D)
         </li>
         
