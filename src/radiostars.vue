@@ -311,125 +311,15 @@
             <p>
               Observed Frequency
             </p>
-          </div>		
+          </div>
           <v-checkbox
-            :color="color0"
-            v-model="oneFourFour"
-            @keyup.enter="oneFourFour = !oneFourFour"
-            label="144.0 MHz"
-            class="type0"
-            hide-details
-          />
-          <v-checkbox
-            :color="color1"
-            v-model="eightFourTwo"
-            @keyup.enter="eightFourTwo = !eightFourTwo"
-            label="842.5 MHz"
-            class="type1"
-            hide-details
-          />
-          <v-checkbox
-            :color="color2"
-            v-model="eightFiveFive"
-            @keyup.enter="eightFiveFive = !eightFiveFive"
-            label="855.5 MHz"
-            class="type2"
-            hide-details
-          />
-          <v-checkbox
-            :color="color3"
-            v-model="eightEightSeven"
-            @keyup.enter="eightEightSeven = !eightEightSeven"
-            label="887.5  MHz"
-            class="type3"
-            hide-details
-          />
-          <v-checkbox
-            :color="color4"
-            v-model="nineOneTwo"
-            @keyup.enter="nineOneTwo = !nineOneTwo"
-            label="912.5 MHz"
-            class="type4"
-            hide-details
-          />
-          <v-checkbox
-            :color="color5"
-            v-model="nineFourThree"
-            @keyup.enter="nineFourThree = !nineFourThree"
-            label="943.5 MHz"
-            class="type5"
-            hide-details
-          />
-          <v-checkbox
-            :color="color6"
-            v-model="tenOneThree"
-            @keyup.enter="tenOneThree = !tenOneThree"
-            label="1013.5 MHz"
-            class="type6"
-            hide-details
-          />
-          <v-checkbox
-            :color="color7"
-            v-model="tenOneEight"
-            @keyup.enter="tenOneEight = !tenOneEight"
-            label="1018.5 MHz"
-            class="type7"
-            hide-details
-          />
-          <v-checkbox
-            :color="color8"
-            v-model="twelveEightFour"
-            @keyup.enter="twelveEightFour = !twelveEightFour"
-            label="1284.0 MHz"
-            class="type8"
-            hide-details
-          />
-          <v-checkbox
-            :color="color9"
-            v-model="thirteenSixFour"
-            @keyup.enter="thirteenSixFour = !thirteenSixFour"
-            label="1364.5 MHz"
-            class="type9"
-            hide-details
-          />
-          <v-checkbox
-            :color="color10"
-            v-model="thirteenSixSeven"
-            @keyup.enter="thirteenSixSeven = !thirteenSixSeven"
-            label="1367.5 MHz"
-            class="type10"
-            hide-details
-          />
-          <v-checkbox
-            :color="color11"
-            v-model="fourteenOneNine"
-            @keyup.enter="fourteenOneNine = !fourteenOneNine"
-            label="1419.5 MHz"
-            class="type11"
-            hide-details
-          />
-          <v-checkbox
-            :color="color12"
-            v-model="fifteenFourThree"
-            @keyup.enter="fifteenFourThree = !fifteenFourThree"
-            label="1543.5 MHz"
-            class="type12"
-            hide-details
-          />
-          <v-checkbox
-            :color="color13"
-            v-model="sixteenFiveFive"
-            @keyup.enter="sixteenFiveFive = !sixteenFiveFive"
-            label="1655.5 MHz"
-            class="type13"
-            hide-details
-          />
-          <v-checkbox
-            :color="color14"
-            v-model="thirtyZeroZero"
-            @keyup.enter="thirtyZeroZero = !thirtyZeroZero"
-            label="3000.0 MHz"
-            class="type14"
+            v-for="(freq, index) in Object.keys(layersOn).sort((freq1, freq2) => Number(freq1) - Number(freq2))"
+            :key="index"
+            :color="colors[index]"
+            v-model="layersOn[freq]"
+            @keyup.enter="console.log(freq); layersOn[freq] = !layersOn[freq]"
+            :label="`${freq.replace('_', '.')} MHz`"
+            :class="`type${index}`"
             hide-details
           />
         </div>
@@ -559,23 +449,29 @@ function parseCsvTable(csv: string) {
 //let mode = "3D" as "2D" | "3D" | null; //| "full" 
 let mode = "2D" as "3D" | "2D" | null;
 
-const MHZ_144_0_TABLE = parseCsvTable(MHZ_144_0_CSV);
-const MHZ_842_5_TABLE = parseCsvTable(MHZ_842_5_CSV);
-const MHZ_855_5_TABLE = parseCsvTable(MHZ_855_5_CSV);
-const MHZ_887_5_TABLE = parseCsvTable(MHZ_887_5_CSV);
-const MHZ_912_5_TABLE = parseCsvTable(MHZ_912_5_CSV);
-const MHZ_943_5_TABLE = parseCsvTable(MHZ_943_5_CSV);
-const MHZ_1013_5_TABLE = parseCsvTable(MHZ_1013_5_CSV);
-const MHZ_1018_5_TABLE = parseCsvTable(MHZ_1018_5_CSV);
-const MHZ_1284_0_TABLE = parseCsvTable(MHZ_1284_0_CSV);
-const MHZ_1364_5_TABLE = parseCsvTable(MHZ_1364_5_CSV);
-const MHZ_1367_5_TABLE = parseCsvTable(MHZ_1367_5_CSV);
-const MHZ_1419_5_TABLE = parseCsvTable(MHZ_1419_5_CSV);
-const MHZ_1543_5_TABLE = parseCsvTable(MHZ_1543_5_CSV);
-const MHZ_1655_5_TABLE = parseCsvTable(MHZ_1655_5_CSV);
-const MHZ_3000_0_TABLE = parseCsvTable(MHZ_3000_0_CSV);
+const CSVS: Record<string, string> = {
+  "144_0": MHZ_144_0_CSV,
+  "842_5": MHZ_842_5_CSV,
+  "855_5": MHZ_855_5_CSV,
+  "887_5": MHZ_887_5_CSV,
+  "912_5": MHZ_912_5_CSV,
+  "943_5": MHZ_943_5_CSV,
+  "1013_5": MHZ_1013_5_CSV,
+  "1018_5": MHZ_1018_5_CSV,
+  "1284_0": MHZ_1284_0_CSV,
+  "1364_5": MHZ_1364_5_CSV,
+  "1367_5": MHZ_1367_5_CSV,
+  "1419_5": MHZ_1419_5_CSV,
+  "1543_5": MHZ_1543_5_CSV,
+  "1655_5": MHZ_1655_5_CSV,
+  "3000_0": MHZ_3000_0_CSV,
+};
 
-type Table = typeof MHZ_144_0_TABLE;
+const DATA_TABLES = Object.fromEntries(Object.entries(CSVS).map(([freq, csv]) => [freq, parseCsvTable(csv)]));
+const DATA_STRINGS = Object.fromEntries(Object.entries(DATA_TABLES).map(([freq, table]) => [freq, formatCsvTable(table)]));
+
+
+type Table = typeof DATA_TABLES[144];
 //type TableRow = typeof MHz_144_0Table[number]; //ZZZ
 
 function formatCsvTable(table: Table): string {
@@ -597,22 +493,6 @@ function formatCsvTable(table: Table): string {
   // the Windows client?), we need the line endings 
   // to be CRLF
 }
-
-const MHZ_144_0_STRING = formatCsvTable(MHZ_144_0_TABLE);
-const MHZ_842_5_STRING = formatCsvTable(MHZ_842_5_TABLE);
-const MHZ_855_5_STRING = formatCsvTable(MHZ_855_5_TABLE);
-const MHZ_887_5_STRING = formatCsvTable(MHZ_887_5_TABLE);
-const MHZ_912_5_STRING = formatCsvTable(MHZ_912_5_TABLE);
-const MHZ_943_5_STRING = formatCsvTable(MHZ_943_5_TABLE);
-const MHZ_1013_5_STRING = formatCsvTable(MHZ_1013_5_TABLE);
-const MHZ_1018_5_STRING = formatCsvTable(MHZ_1018_5_TABLE);
-const MHZ_1284_0_STRING = formatCsvTable(MHZ_1284_0_TABLE);
-const MHZ_1364_5_STRING = formatCsvTable(MHZ_1364_5_TABLE);
-const MHZ_1367_5_STRING = formatCsvTable(MHZ_1367_5_TABLE);
-const MHZ_1419_5_STRING = formatCsvTable(MHZ_1419_5_TABLE);
-const MHZ_1543_5_STRING = formatCsvTable(MHZ_1543_5_TABLE);
-const MHZ_1655_5_STRING = formatCsvTable(MHZ_1655_5_TABLE);
-const MHZ_3000_0_STRING = formatCsvTable(MHZ_3000_0_TABLE);
 
 /*type LocationRad = { //ZZZ
   longitudeRad: number;
@@ -737,6 +617,8 @@ export default defineComponent({
       instant: true
     }  as GotoRADecZoomParams;
 
+    const frequencies = Object.keys(DATA_STRINGS);
+
     return {
       showIntro: true,
       isMenuOpen: false,
@@ -755,7 +637,6 @@ export default defineComponent({
       imagesetFolder: null as Folder | null,
       backgroundImagesets: [] as BackgroundImageset[],
       cfOpacity: 0,
-      layers: {} as Record<string,ImageSetLayer>,
 
       playing: false,
       playCount: 0,
@@ -782,60 +663,41 @@ export default defineComponent({
       color14: "#638b6f",*/
 
       //QQQ fix order here
-      color0: "#2767a4",  
-      color1: "#4e91af",  
-      color2: "#75bab9",  
-      color3: "#19535f", 
-      color4: "#497e73", 
+      colors: [
+        "#2767a4",  
+        "#4e91af",  
+        "#75bab9",  
+        "#19535f", 
+        "#497e73", 
 
-      color5: "#79a887",
-      color6: "#964983",
-      color7: "#b46491",  
-      color8: "#ca96ab", 
-      color9: "#7563ab",
-      
-      color10: "#b495c9",
-      color11: "#bb5d66",
-      color12: "#e48484", 
-      color13: "#8aa239", 
-      color14: "#b1c948", 
-
+        "#79a887",
+        "#964983",
+        "#b46491",  
+        "#ca96ab", 
+        "#7563ab",
+        
+        "#b495c9",
+        "#bb5d66",
+        "#e48484", 
+        "#8aa239", 
+        "#b1c948", 
+      ],
       
       colorD: "#070021cc", //"#45aecb",
       colorWhite: "#ffffff",
       todayColor: "#D6B004",
-      
-      oneFourFour: true,
-      oneFourFourLayer: null as SpreadSheetLayer | null,
-      eightFourTwo: true,
-      eightFourTwoLayer: null as SpreadSheetLayer | null,
-      eightFiveFive: true,
-      eightFiveFiveLayer: null as SpreadSheetLayer | null,
-      eightEightSeven: true,
-      eightEightSevenLayer: null as SpreadSheetLayer | null,
-      nineOneTwo: true,
-      nineOneTwoLayer: null as SpreadSheetLayer | null,
-      nineFourThree: true,
-      nineFourThreeLayer: null as SpreadSheetLayer | null,
-      tenOneThree: true,
-      tenOneThreeLayer: null as SpreadSheetLayer | null,
-      tenOneEight: true,
-      tenOneEightLayer: null as SpreadSheetLayer | null,
-      twelveEightFour: true,
-      twelveEightFourLayer: null as SpreadSheetLayer | null,
-      thirteenSixFour: true,
-      thirteenSixFourLayer: null as SpreadSheetLayer | null,
-      thirteenSixSeven: true,
-      thirteenSixSevenLayer: null as SpreadSheetLayer | null,
-      fourteenOneNine: true,
-      fourteenOneNineLayer: null as SpreadSheetLayer | null,
-      fifteenFourThree: true,
-      fifteenFourThreeLayer: null as SpreadSheetLayer | null,
-      sixteenFiveFive: true,
-      sixteenFiveFiveLayer: null as SpreadSheetLayer | null,
-      thirtyZeroZero: true,
-      thirtyZeroZeroLayer: null as SpreadSheetLayer | null,
-      
+
+      layers: frequencies.reduce(
+        (obj: Record<string, SpreadSheetLayer | null>, value: string) => {
+          obj[value] = null;
+          return obj;
+        }, {}) as { [freq: string]: SpreadSheetLayer | null },
+
+      layersOn: frequencies.reduce(
+        (obj: Record<string, boolean>, value: string) => {
+          obj[value] = true;
+          return obj;
+        }, {}),
       
       modeReactive: mode as "2D" | "3D" | null, //| "full"
       resizeObserver: null as ResizeObserver | null,
@@ -967,397 +829,35 @@ export default defineComponent({
       });
       
       this.backgroundImagesets = [...skyBackgroundImagesets];
+
+      Object.entries(DATA_STRINGS).forEach(([freq, string]) => {
+        this.createTableLayer({
+          name: `${Number(freq).toFixed(1)} MHz`,
+          referenceFrame: "Sky",
+          dataCsv: string,
+        }).then((layer) => {
+          layer.set_lngColumn(1);
+          layer.set_latColumn(2);
+          layer.set_altColumn(3);
+          layer.set_altUnit(AltUnits.parsecs);
+          layer.set_altType(AltTypes.distance);
+          layer.set_markerScale(MarkerScales.screen);
+          layer.set_showFarSide(true);
+          this.applyTableLayerSettings({
+            id: layer.id.toString(),
+            settings: [
+              ["scaleFactor", 45],
+              ["plotType", PlotTypes.circle],
+              ["color", Color.fromHex(this.colors[0])],
+              //["sizeColumn", 4],
+              //["pointScaleType", PointScaleTypes.log],
+              ["opacity", 1.0]
+            ]
+          });
+          this.layers[freq] = layer;
+        });
+      });
       
-      this.createTableLayer({
-        name: "144.0 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_144_0_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color0)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.oneFourFourLayer = layer;
-      });
-      
-      this.createTableLayer({
-        name: "842.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_842_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color1)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.eightFourTwoLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "855.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_855_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color2)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.eightFiveFiveLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "887.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_887_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color3)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.eightEightSevenLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "912.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_912_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color4)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.nineOneTwoLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "943.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_943_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color5)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.nineFourThreeLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1013.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1013_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color6)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.tenOneThreeLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1018.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1018_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color7)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.tenOneEightLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1284.0 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1284_0_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color8)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.twelveEightFourLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1364.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1364_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color9)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.thirteenSixFourLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1367.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1367_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color10)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.thirteenSixSevenLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1419.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1419_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color11)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.fourteenOneNineLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1543.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1543_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color12)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.fifteenFourThreeLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "1655.5 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_1655_5_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color13)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.sixteenFiveFiveLayer = layer;
-      });
-
-      this.createTableLayer({
-        name: "3000.0 MHz",
-        referenceFrame: "Sky",
-        dataCsv: MHZ_3000_0_STRING
-      }).then((layer) => {
-        layer.set_lngColumn(1);
-        layer.set_latColumn(2);
-        layer.set_altColumn(3);
-        layer.set_altUnit(AltUnits.parsecs);
-        layer.set_altType(AltTypes.distance);
-        layer.set_markerScale(MarkerScales.screen);
-        layer.set_showFarSide(true);
-        this.applyTableLayerSettings({
-          id: layer.id.toString(),
-          settings: [
-            ["scaleFactor", 45],
-            ["plotType", PlotTypes.circle],
-            ["color", Color.fromHex(this.color14)],
-            //["sizeColumn", 4],
-            //["pointScaleType", PointScaleTypes.log],
-            ["opacity", 1.0]
-          ]
-        });
-        this.thirtyZeroZeroLayer = layer;
-      });
-
       this.showControls = !this.mobile;
       
       /*this.loadImageCollection({
@@ -1397,6 +897,15 @@ export default defineComponent({
         this.backgroundImagesets.unshift(
           new BackgroundImageset("NASA Deep Star Maps (Optical)", "Deep Star Maps 2020")
         );
+      });
+
+      Object.keys(this.layersOn).forEach(freq => {
+        this.$watch(`layersOn.${freq}`, (on: boolean) => {
+          const layer = this.layers[freq];
+          if (layer !== null) {
+            applySpreadSheetLayerSetting(layer, ["opacity", on ? 1.0 : 0.0]);
+          }
+        });
       });
 
 
@@ -1455,9 +964,9 @@ export default defineComponent({
         return this.cfOpacity;
       },
       set(o: number) {
-        if (this.layers.gammafermi) {
-          applyImageSetLayerSetting(this.layers.gammafermi, ["opacity", 0.01 * o]);
-        }
+        // if (this.layers.gammafermi) {
+        //   applyImageSetLayerSetting(this.layers.gammafermi, ["opacity", 0.01 * o]);
+        // }
         this.cfOpacity = o;
       }
     },
@@ -1476,27 +985,16 @@ export default defineComponent({
       return this.smallSize && this.touchscreen;
     },
     cssVars() {
-      return {
+      const css: Record<string, string> = {
         '--color-default': this.colorD,
         '--color-default2': this.colorWhite,
-        '--color0':this.color0,
-        '--color1':this.color1,
-        '--color2':this.color2,
-        '--color3':this.color3,
-        '--color4':this.color4,
-        '--color5':this.color5,
-        '--color6':this.color6,
-        '--color7':this.color7,
-        '--color8': this.color8,
-        '--color9': this.color9,
-        '--color10': this.color10,
-        '--color11': this.color11,
-        '--color12': this.color12,
-        '--color13': this.color13,
-        '--color14': this.color14,
-
         '--app-content-height': this.showTextSheet ? '66%' : '100%',
       };
+
+      for (const [index, color] of Object.entries(this.colors)) {
+        css[`--color${index}`] = color;
+      }
+      return css;
     },
     popoverCssVars() {
       const x = this.lastClosePt?.x ?? 0;
@@ -1623,66 +1121,11 @@ export default defineComponent({
       this.setForegroundImageByName(this.fgName); //AAA add function to remeber selected foreground imageset
       this.applySetting(["showSolarSystem", false]);
 
-      this.oneFourFourLayer?.set_scaleFactor(35);
-      this.oneFourFourLayer?.set_plotType(PlotTypes.circle);
-      //this.oneFourFourLayer?.set_opacity(1);
-
-      this.eightFourTwoLayer?.set_scaleFactor(35);
-      this.eightFourTwoLayer?.set_plotType(PlotTypes.circle);
-      //this.eightFourTwoLayer?.set_opacity(1);
-
-      this.eightFiveFiveLayer?.set_scaleFactor(35);
-      this.eightFiveFiveLayer?.set_plotType(PlotTypes.circle);
-      //this.eightFiveFiveLayer?.set_opacity(1);
-
-      this.eightEightSevenLayer?.set_scaleFactor(35);
-      this.eightEightSevenLayer?.set_plotType(PlotTypes.circle);
-      //this.eightEightSevenLayer?.set_opacity(1);
-
-      this.nineOneTwoLayer?.set_scaleFactor(35);
-      this.nineOneTwoLayer?.set_plotType(PlotTypes.circle);
-      //this.nineOneTwoLayer?.set_opacity(1);
-
-      this.nineFourThreeLayer?.set_scaleFactor(35);
-      this.nineFourThreeLayer?.set_plotType(PlotTypes.circle);
-      //this.nineFourThreeLayer?.set_opacity(1);
-
-      this.tenOneThreeLayer?.set_scaleFactor(35);
-      this.tenOneThreeLayer?.set_plotType(PlotTypes.circle);
-      //this.tenOneThreeLayer?.set_opacity(1);
-
-      this.tenOneEightLayer?.set_scaleFactor(35);
-      this.tenOneEightLayer?.set_plotType(PlotTypes.circle);
-      //this.tenOneEightLayer?.set_opacity(1);
-
-      this.twelveEightFourLayer?.set_scaleFactor(35);
-      this.twelveEightFourLayer?.set_plotType(PlotTypes.circle);
-      //this.twelveEightFourLayer?.set_opacity(1);
-
-      this.thirteenSixFourLayer?.set_scaleFactor(35);
-      this.thirteenSixFourLayer?.set_plotType(PlotTypes.circle);
-      //this.thirteenSixFourLayer?.set_opacity(1);
-
-      this.thirteenSixSevenLayer?.set_scaleFactor(35);
-      this.thirteenSixSevenLayer?.set_plotType(PlotTypes.circle);
-      //this.thirteenSixSevenLayer?.set_opacity(1);
-
-      this.fourteenOneNineLayer?.set_scaleFactor(35);
-      this.fourteenOneNineLayer?.set_plotType(PlotTypes.circle);
-      //this.fourteenOneNineLayer?.set_opacity(1);
-
-      this.fifteenFourThreeLayer?.set_scaleFactor(35);
-      this.fifteenFourThreeLayer?.set_plotType(PlotTypes.circle);
-      //this.fifteenFourThreeLayer?.set_opacity(1);
-
-      this.sixteenFiveFiveLayer?.set_scaleFactor(35);
-      this.sixteenFiveFiveLayer?.set_plotType(PlotTypes.circle);
-      //this.sixteenFiveFiveLayer?.set_opacity(1);
-
-      this.thirtyZeroZeroLayer?.set_scaleFactor(35);
-      this.thirtyZeroZeroLayer?.set_plotType(PlotTypes.circle);
-      //this.thirtyZeroZeroLayer?.set_opacity(1);
-
+      Object.values(this.layers).forEach(layer => {
+        layer?.set_scaleFactor(35);
+        layer?.set_plotType(PlotTypes.circle);
+        // layer?.set_opacity(1);
+      });
 
       return asyncSetTimeout(() => {
         
@@ -1701,66 +1144,11 @@ export default defineComponent({
       this.setBackgroundImageByName("Solar System");
       this.setForegroundImageByName("Solar System");
 
-      this.oneFourFourLayer?.set_scaleFactor(25);
-      this.oneFourFourLayer?.set_plotType(PlotTypes.gaussian);
-      //this.oneFourFourLayer?.set_opacity(1);
-
-      this.eightFourTwoLayer?.set_scaleFactor(25);
-      this.eightFourTwoLayer?.set_plotType(PlotTypes.gaussian);
-      //this.eightFourTwoLayer?.set_opacity(1);
-
-      this.eightFiveFiveLayer?.set_scaleFactor(25);
-      this.eightFiveFiveLayer?.set_plotType(PlotTypes.gaussian);
-      //this.eightFiveFiveLayer?.set_opacity(1);
-
-      this.eightEightSevenLayer?.set_scaleFactor(25);
-      this.eightEightSevenLayer?.set_plotType(PlotTypes.gaussian);
-      //this.eightEightSevenLayer?.set_opacity(1);
-
-      this.nineOneTwoLayer?.set_scaleFactor(25);
-      this.nineOneTwoLayer?.set_plotType(PlotTypes.gaussian);
-      //this.nineOneTwoLayer?.set_opacity(1);
-
-      this.nineFourThreeLayer?.set_scaleFactor(25);
-      this.nineFourThreeLayer?.set_plotType(PlotTypes.gaussian);
-      //this.nineFourThreeLayer?.set_opacity(1);
-
-      this.tenOneThreeLayer?.set_scaleFactor(25);
-      this.tenOneThreeLayer?.set_plotType(PlotTypes.gaussian);
-      //this.tenOneThreeLayer?.set_opacity(1);
-
-      this.tenOneEightLayer?.set_scaleFactor(25);
-      this.tenOneEightLayer?.set_plotType(PlotTypes.gaussian);
-      //this.tenOneEightLayer?.set_opacity(1);
-
-      this.twelveEightFourLayer?.set_scaleFactor(25);
-      this.twelveEightFourLayer?.set_plotType(PlotTypes.gaussian);
-      //this.twelveEightFourLayer?.set_opacity(1);
-
-      this.thirteenSixFourLayer?.set_scaleFactor(25);
-      this.thirteenSixFourLayer?.set_plotType(PlotTypes.gaussian);
-      //this.thirteenSixFourLayer?.set_opacity(1);
-
-      this.thirteenSixSevenLayer?.set_scaleFactor(25);
-      this.thirteenSixSevenLayer?.set_plotType(PlotTypes.gaussian);
-      //this.thirteenSixSevenLayer?.set_opacity(1);
-
-      this.fourteenOneNineLayer?.set_scaleFactor(25);
-      this.fourteenOneNineLayer?.set_plotType(PlotTypes.gaussian);
-      //this.fourteenOneNineLayer?.set_opacity(1);
-
-      this.fifteenFourThreeLayer?.set_scaleFactor(25);
-      this.fifteenFourThreeLayer?.set_plotType(PlotTypes.gaussian);
-      //this.fifteenFourThreeLayer?.set_opacity(1);
-
-      this.sixteenFiveFiveLayer?.set_scaleFactor(25);
-      this.sixteenFiveFiveLayer?.set_plotType(PlotTypes.gaussian);
-      //this.sixteenFiveFiveLayer?.set_opacity(1);
-
-      this.thirtyZeroZeroLayer?.set_scaleFactor(25);
-      this.thirtyZeroZeroLayer?.set_plotType(PlotTypes.gaussian);
-      //this.thirtyZeroZeroLayer?.set_opacity(1);
-     
+      Object.values(this.layers).forEach(layer => {
+        layer?.set_scaleFactor(25);
+        layer?.set_plotType(PlotTypes.gaussian);
+        // layer?.set_opacity(1);
+      });
 
       return this.gotoRADecZoom({
         ...this.position3D,
@@ -1806,23 +1194,7 @@ export default defineComponent({
       const raDecDeg = this.findRADecForScreenPoint(point);
       const target = { ra: D2R * raDecDeg.ra, dec: D2R * raDecDeg.dec };
 
-      const layers = [this.oneFourFourLayer,
-        this.eightFourTwoLayer,
-        this.eightFiveFiveLayer,
-        this.eightEightSevenLayer,
-        this.nineOneTwoLayer,
-        this.nineFourThreeLayer,
-        this.tenOneThreeLayer,
-        this.tenOneEightLayer,
-        this.twelveEightFourLayer,
-        this.thirteenSixFourLayer,
-        this.thirteenSixSevenLayer,
-        this.fourteenOneNineLayer,
-        this.fifteenFourThreeLayer,
-        this.sixteenFiveFiveLayer,
-        this.thirtyZeroZeroLayer
-      ];
-      for (const layer of layers) {
+      for (const layer of Object.values(this.layers)) {
         if (layer == null) {
           continue;
         }
@@ -2149,82 +1521,6 @@ export default defineComponent({
       this.wwtSettings.set_showConstellationLabels(show);
       this.wwtSettings.set_showConstellationFigures(show);
     },
-    oneFourFour(on: boolean) {
-      if (this.oneFourFourLayer) {
-        applySpreadSheetLayerSetting(this.oneFourFourLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    eightFourTwo(on: boolean) {
-      if (this.eightFourTwoLayer) {
-        applySpreadSheetLayerSetting(this.eightFourTwoLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    eightFiveFive(on: boolean) {
-      if (this.eightFiveFiveLayer) {
-        applySpreadSheetLayerSetting(this.eightFiveFiveLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    eightEightSeven(on: boolean) {
-      if (this.eightEightSevenLayer) {
-        applySpreadSheetLayerSetting(this.eightEightSevenLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    nineOneTwo(on: boolean) {
-      if (this.nineOneTwoLayer) {
-        applySpreadSheetLayerSetting(this.nineOneTwoLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    nineFourThree(on: boolean) {
-      if (this.nineFourThreeLayer) {
-        applySpreadSheetLayerSetting(this.nineFourThreeLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    tenOneThree(on: boolean) {
-      if (this.tenOneThreeLayer) {
-        applySpreadSheetLayerSetting(this.tenOneThreeLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    tenOneEight(on: boolean) {
-      if (this.tenOneEightLayer) {
-        applySpreadSheetLayerSetting(this.tenOneEightLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    twelveEightFour(on: boolean) {
-      if (this.twelveEightFourLayer) {
-        applySpreadSheetLayerSetting(this.twelveEightFourLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    thirteenSixFour(on: boolean) {
-      if (this.thirteenSixFourLayer) {
-        applySpreadSheetLayerSetting(this.thirteenSixFourLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    thirteenSixSeven(on: boolean) {
-      if (this.thirteenSixSevenLayer) {
-        applySpreadSheetLayerSetting(this.thirteenSixSevenLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    fourteenOneNine(on: boolean) {
-      if (this.fourteenOneNineLayer) {
-        applySpreadSheetLayerSetting(this.fourteenOneNineLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    fifteenFourThree(on: boolean) {
-      if (this.fifteenFourThreeLayer) {
-        applySpreadSheetLayerSetting(this.fifteenFourThreeLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    sixteenFiveFive(on: boolean) {
-      if (this.sixteenFiveFiveLayer) {
-        applySpreadSheetLayerSetting(this.sixteenFiveFiveLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-    thirtyZeroZero(on: boolean) {
-      if (this.thirtyZeroZeroLayer) {
-        applySpreadSheetLayerSetting(this.thirtyZeroZeroLayer, ["opacity", on ? 1.0 : 0.0]);
-      }
-    },
-
 
     fgName(name: string) {
       
