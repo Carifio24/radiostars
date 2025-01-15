@@ -379,7 +379,7 @@
 import { defineComponent, PropType, onMounted, ref } from 'vue';
 import { csvFormatRows, csvParse } from "d3-dsv";
 import { distance } from "@wwtelescope/astro";
-import { Color, Constellations, Folder, Layer, LayerManager, RenderContext, Settings, SpreadSheetLayer, WWTControl } from "@wwtelescope/engine"; //Grids, Poly
+import { Color, Constellations, Folder, Grids, Layer, LayerManager, RenderContext, Settings, SpreadSheetLayer, Texture, WWTControl } from "@wwtelescope/engine"; //Grids, Poly
 import { AltTypes, AltUnits, MarkerScales, PlotTypes, RAUnits, Thumbnail } from "@wwtelescope/engine-types"; //ImageSetType, PointScaleTypes
 import { GotoRADecZoomParams } from "@wwtelescope/engine-pinia";
 import L, { Map } from "leaflet"; //LeafletMouseEvent
@@ -921,6 +921,8 @@ export default defineComponent({
       // @ts-ignore
       Constellations.initializeConstellationNames = initializeConstellationNames;
       //Grids._makeAltAzGridText = makeAltAzGridText;
+
+      Grids._milkyWayImage = Texture.fromUrl("https://www.cosmos.esa.int/documents/29201/20118332/MilkyWay_25J14_40KPC_Top_D53_5K_HighContrast_Smallest.jpg/26ecc3f3-f32f-6c53-1875-3c31d4a2b017?t=1736882726155");
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
