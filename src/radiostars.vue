@@ -758,12 +758,7 @@ export default defineComponent({
       
       // initialize the view to black so that we don't flicker DSS
       this.applySetting(["galacticMode", true]);
-      this.loadHipsWTML()
-        // .then(() => {
-        //   console.log('init set3DMode');
-        //   return this.set3DMode();
-        // })
-        .then(() => this.positionSet = true);
+      this.loadHipsWTML().then(() => this.positionSet = true);
 
       this.applySetting(["showConstellationBoundries", false]);  // Note that the typo here is intentional
       this.applySetting(["solarSystemStars", false]);
