@@ -17,7 +17,7 @@
     "build": "vue-cli-service build",
     "clean": "rimraf dist",
     "lint": "vue-cli-service lint src --no-fix",
-    "serve": "vue-cli-service serve"
+    "serve": "./patch.sh; vue-cli-service serve"
   },
   "devDependencies": {
     "@types/d3-dsv": "^3.0.7",
