@@ -630,7 +630,7 @@ export default defineComponent({
       showCatalogButton: true,
       userNotReady: true,
 
-      showSplashScreen: true,
+      showSplashScreen: false,
       imagesetLayers: {} as Record<string, ImageSetLayer>,
       layersLoaded: false,
       positionSet: false,
@@ -640,6 +640,7 @@ export default defineComponent({
 
       playing: false,
       playCount: 0,
+      hasBeen2D: false,
 
       showAltAzGrid: false,
       showConstellations: false,
@@ -808,29 +809,6 @@ export default defineComponent({
         }));
       });
       
-      this.loadImageCollection({
-        url: this.bgWtml,
-        loadChildFolders: true,
-      }).then((_folder) => {
-        this.curForegroundImagesetName = this.fgName;
-        this.foregroundOpacity = 0;
-        this.backgroundImagesets.unshift(
-          new BackgroundImageset("Fermi LAT 8-Year (Gamma Ray)", "Fermi LAT 8-year (gamma)")
-        );// do for each
-
-        tween(0, 70, (value) => { this.foregroundOpacity = value; }, {
-          time: 7500,
-          //ease: (t: number) => t * (2 * (1 - t) * 1.75 + t * 0.5),
-          //done: () => { this.foregroundOpacity = 50; }
-        });
-      });
-      
-
-      this.loadImageCollection({
-        url: this.bgWtml,
-        loadChildFolders: true,
-      });
-      
       this.backgroundImagesets = [...skyBackgroundImagesets];
 
       Object.entries(DATA_STRINGS).forEach(([freq, string], index) => {
@@ -839,6 +817,7 @@ export default defineComponent({
           referenceFrame: "Sky",
           dataCsv: string,
         }).then((layer) => {
+          this.layers[freq] = layer;
           layer.set_lngColumn(1);
           layer.set_latColumn(2);
           layer.set_altColumn(3);
@@ -858,7 +837,6 @@ export default defineComponent({
               ["opacity", 1.0]
             ]
           });
-          this.layers[freq] = layer;
         });
       });
       
@@ -899,9 +877,10 @@ export default defineComponent({
       })
         .then((_folder) => {
           if (mode === "2D") {
-            this.curBackgroundImagesetName = this.bgName;
+            this.set2DMode();
           }
           this.backgroundImagesets.unshift(
+            new BackgroundImageset("Fermi LAT 8-Year (Gamma Ray)", "Fermi LAT 8-year (gamma)"),
             new BackgroundImageset("NASA Deep Star Maps (Optical)", "Deep Star Maps 2020")
           );
         });
@@ -1127,6 +1106,7 @@ export default defineComponent({
 
     set2DMode() {
       this.setBackgroundImageByName(this.bgName);
+      this.foregroundOpacity = this.hasBeen2D ? 70 : 0;
       this.setForegroundImageByName(this.fgName); //AAA add function to remeber selected foreground imageset
       this.applySetting(["showSolarSystem", false]);
 
@@ -1135,6 +1115,15 @@ export default defineComponent({
         layer?.set_plotType(PlotTypes.circle);
         // layer?.set_opacity(1);
       });
+
+      if (!this.hasBeen2D) {
+        tween(0, 70, (value) => { this.foregroundOpacity = value; }, {
+          time: 7500,
+          //ease: (t: number) => t * (2 * (1 - t) * 1.75 + t * 0.5),
+          //done: () => { this.foregroundOpacity = 50; }
+        }); 
+      }
+      this.hasBeen2D = true;
 
       return asyncSetTimeout(() => {
         
