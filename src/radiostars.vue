@@ -704,6 +704,7 @@ export default defineComponent({
       resizeObserver: null as ResizeObserver | null,
       //background2DImageset: "Deep Star Maps 2020",
       fgName: "PLANCK R2 HFI color composition 353-545-857 GHz",
+      fg2DOpacity: 0,
       position3D: this.initialCameraParams as Omit<GotoRADecZoomParams,'instant'>,
       position2D: initial2DPosition as Omit<GotoRADecZoomParams,'instant'>,
       initial2DPosition,
@@ -1106,7 +1107,7 @@ export default defineComponent({
 
     set2DMode() {
       this.setBackgroundImageByName(this.bgName);
-      this.foregroundOpacity = this.hasBeen2D ? 70 : 0;
+      this.foregroundOpacity = this.fg2DOpacity;
       this.setForegroundImageByName(this.fgName); //AAA add function to remeber selected foreground imageset
       this.applySetting(["showSolarSystem", false]);
 
@@ -1520,12 +1521,15 @@ export default defineComponent({
     },
 
     fgName(name: string) {
-      
       if (this.modeReactive == "2D") {
         this.setForegroundImageByName(name);
-        return;
       }
-      
+    },
+
+    foregroundOpacity(opacity: number) {
+      if (this.modeReactive == "2D") {
+        this.fg2DOpacity = opacity;
+      }
     },
     
     modeReactive(newVal, oldVal) {
