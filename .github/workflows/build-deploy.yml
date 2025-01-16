@@ -7,6 +7,10 @@ on:
 
 jobs:
   build:
+
+    permissions:
+      contents: write
+
     if: ${{ github.repository_owner == 'Carifio24' }}
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +23,10 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.17.1'
+          node-version: '18.17.1'  
+
+      - name: Make patch script executable
+        run: chmod +x patch.sh
 
       - name: Yarn install
         run: yarn install
